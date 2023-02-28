@@ -62,10 +62,10 @@ import {
       labels,
       datasets: [
         {
-          label: 'Disk Usage (GB)',
+          label: 'Disk Used (GB)',
           data:  last15.map((i: string) => parseInt(i)/1024), // * En Gg
-          borderColor: '#1D4375',
-          backgroundColor: '#22508b',
+          borderColor: '#3E9DC9',
+          backgroundColor: '#1AA2E1',
         },
       ],
     };

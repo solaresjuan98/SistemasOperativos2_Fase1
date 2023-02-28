@@ -55,10 +55,10 @@ export const CpuGraph = () => {
     labels,
     datasets: [
       {
-        label: 'CPU Usage (GB)',
-        data: last15.map((i: string) => parseInt(i)),
-        borderColor: '#1D4375',
-        backgroundColor: '#22508b',
+        label: 'CPU Usage (%)',
+        data: last15.map((i: string) => 100 - parseInt(i)),
+        borderColor: '#3E9DC9',
+        backgroundColor: '#1AA2E1',
       }
 
     ],

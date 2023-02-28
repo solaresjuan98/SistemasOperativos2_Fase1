@@ -10,6 +10,10 @@ export function DiskUsage() {
   return window['go']['main']['App']['DiskUsage']();
 }
 
+export function GetDiskSize() {
+  return window['go']['main']['App']['GetDiskSize']();
+}
+
 export function Greet(arg1) {
   return window['go']['main']['App']['Greet'](arg1);
 }

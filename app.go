@@ -104,15 +104,41 @@ func (A *App) DiskUsage()string  {
 	// * Used
 	used := size -available
 
-	// usage := MemUsage {
-	// 	availableMemory:  fmt.Sprintf("%f", available),
-	// 	usedMemory: fmt.Sprintf("%f", used),
-	// 	sizeMemory: fmt.Sprintf("%f", size),
-	// 	percMemory: fmt.Sprintf("%f", perc),
-	// }
-
-
 	return fmt.Sprintf("%f",used/1024)
+
+}
+
+
+func (A *App) GetDiskSize()string  {
+	
+	cmd := exec.Command("df", "--output=avail,size,pcent")
+
+	out, err := cmd.Output()
+
+	if err != nil {
+		fmt.Println("Error", err)
+		//return
+	}
+
+	lines := strings.Split(string(out), "\n")
+
+
+	tokens := strings.Fields(lines[2])
+
+	fmt.Println(tokens)
+
+	// * Available
+	//available, _ := strconv.ParseFloat(tokens[0], 64)
+
+	// * Size
+	size, _ := strconv.ParseFloat(tokens[1], 64)
+
+	// * Percentage
+	// perc, _ := strconv.ParseFloat(tokens[2], 64)
+
+
+
+	return fmt.Sprintf("%f",size/1024)
 
 }
 
