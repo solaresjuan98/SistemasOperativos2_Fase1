@@ -7,6 +7,10 @@ export function DiskUsage():Promise<string>;
 
 export function GetDiskSize():Promise<string>;
 
+export function GetRamUsage():Promise<string>;
+
+export function GetTotalRam():Promise<string>;
+
 export function Greet(arg1:string):Promise<string>;
 
 export function Test(arg1:string):Promise<string>;

@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 
-import { DiskUsage } from '../../wailsjs/go/main/App';
+import { GetRamUsage } from '../../wailsjs/go/main/App';
 
 
 ChartJS.register(
@@ -32,47 +32,43 @@ export const options = {
         },
         title: {
             display: true,
-            text: 'Disk Usage Chart',
+            text: 'RAM Usage Chart',
         },
     },
 };
 
 const labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
-interface MemUsage {
-    availableMemory: string,
-    usedMemory: string,
-    sizeMemory: string,
-    percMemory: string
-}
-
 
 export const RamGraph = () => {
 
     const [value, setValue] = useState('');
-
+    const [totalRam, setTotalRam] = useState('');
 
     const [last15, setLast15] = useState<any>(Array(15).fill(0));
     const [datos, setDatos] = useState<string[]>([]);
 
     //
     const updateResultText = (result: string) => setValue(result);
+    const updateTotalRam = (ramValue:string) => setTotalRam(ramValue);
+
 
     const data = {
         labels,
         datasets: [
             {
-                label: 'Disk Used (GB)',
-                data:  last15.map((i: string) => parseInt(i)/1024), // * En Gg
+                label: 'RAM Used (GB)',
+                data:  last15.map((i: string) => parseFloat(i)), // * En GB
                 borderColor: '#3E9DC9',
                 backgroundColor: '#1AA2E1',
-            },
+            }
         ],
     };
 
     function showMemUsage() {
 
-        DiskUsage().then(updateResultText);
+        GetRamUsage().then(updateResultText);
+
 
     }
 
@@ -106,9 +102,6 @@ export const RamGraph = () => {
 
             <Line options={options} data={data} />
             <br />
-
-            {/* <h6>{datos.slice(-15)}</h6> */}
-            {/* <button className="btn btn-primary" onClick={showMemUsage}> Get data </button> */}
         </div>
 
     );

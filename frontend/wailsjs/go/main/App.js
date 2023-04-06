@@ -14,6 +14,14 @@ export function GetDiskSize() {
   return window['go']['main']['App']['GetDiskSize']();
 }
 
+export function GetRamUsage() {
+  return window['go']['main']['App']['GetRamUsage']();
+}
+
+export function GetTotalRam() {
+  return window['go']['main']['App']['GetTotalRam']();
+}
+
 export function Greet(arg1) {
   return window['go']['main']['App']['Greet'](arg1);
 }

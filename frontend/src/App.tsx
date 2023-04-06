@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { DiskUsage, GetDiskSize } from '../wailsjs/go/main/App';
+import { DiskUsage, GetDiskSize, GetTotalRam } from '../wailsjs/go/main/App';
 import './boostrap.min.css';
 //import { Greet } from "../wailsjs/go/main/App";
 
@@ -11,7 +11,7 @@ import { RamGraph }  from './components/RamGraph';
 function App() {
     // const [name, setName] = useState('');
     // const updateName = (e: any) => setName(e.target.value);
-    const [result, setResult] = useState('');
+    //const [result, setResult] = useState('');
     const [diskSize, setDiskSize] = useState(0);
     const updateSize = (result: string) => setDiskSize(parseInt(result)/1024);
 
@@ -19,9 +19,13 @@ function App() {
     const [used, setUsed] = useState(0);
     const updateUsed = (result: string) => setUsed(parseInt(result)/1024);
 
+    const [totalRam, setTotalRam] = useState(0);
+    const updateRAM = (result: string) => setTotalRam(parseFloat(result));
+
     function getSize() {
         GetDiskSize().then(updateSize);
         DiskUsage().then(updateUsed);
+        GetTotalRam().then(updateRAM);
     }
 
     useEffect(() => {
@@ -55,6 +59,7 @@ function App() {
 
             <h3>Disk size: </h3> <pre>{diskSize}{" "}GB</pre>
             <h3>Free space: </h3> <pre>{diskSize-used}{" "}GB</pre>
+            <h3>Total RAM: </h3> <pre>{totalRam}{" "}GB</pre>
             <div className="row">
                 <div className="col-4" style={{ backgroundColor: '#ccc'}}>
                     <h1 className='text-dark text-center'>CPU Usage</h1>

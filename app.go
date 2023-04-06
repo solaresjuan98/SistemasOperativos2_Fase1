@@ -45,7 +45,7 @@ func (a *App) Greet(name string) string {
 
 	tokens := strings.Fields(lines[3])
 
-	// Concertir el campo %idle en un numero float
+	// Convertir el campo %idle en un numero float
 	idle, err := strconv.ParseFloat(tokens[11], 64)
 
 	return fmt.Sprintf("Hello %s, It's show time!, and the idle is %f", name, idle)
@@ -131,6 +131,44 @@ func (A *App) GetDiskSize() string {
 
 	return fmt.Sprintf("%f", size/1024)
 
+}
+
+func (A *App) GetRamUsage() string {
+
+	out, _ := exec.Command("free", "-h").Output()
+
+	lines := strings.Split(string(out), "\n")
+
+	// * Get the second line
+	tokens := strings.Fields(lines[1])
+
+	valueWithUnits := tokens[3]
+	firstThree := valueWithUnits[:3]
+
+	free, _ := strconv.ParseFloat(firstThree, 64)
+
+	//fmt.Println(free)
+
+	return fmt.Sprintf("%f", free)
+}
+
+func (A *App) GetTotalRam() string {
+
+	out, _ := exec.Command("free", "-h").Output()
+
+	lines := strings.Split(string(out), "\n")
+
+	// * Get the second line
+	tokens := strings.Fields(lines[1])
+
+	valueWithUnits := tokens[1]
+	firstThree := valueWithUnits[:3]
+
+	total, _ := strconv.ParseFloat(firstThree, 64)
+
+	fmt.Println(total)
+
+	return fmt.Sprintf("%f", total)
 }
 
 func (a *App) Test(name string) string {
