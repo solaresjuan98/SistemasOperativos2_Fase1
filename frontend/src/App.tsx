@@ -6,6 +6,7 @@ import './boostrap.min.css';
 //
 import { CpuGraph } from './components/CpuGraph'
 import { DiskGraph } from './components/DiskGraph';
+import { RamGraph }  from './components/RamGraph';
 
 function App() {
     // const [name, setName] = useState('');
@@ -55,18 +56,24 @@ function App() {
             <h3>Disk size: </h3> <pre>{diskSize}{" "}GB</pre>
             <h3>Free space: </h3> <pre>{diskSize-used}{" "}GB</pre>
             <div className="row">
-                <div className="col-6" style={{ backgroundColor: '#ccc'}}>
+                <div className="col-4" style={{ backgroundColor: '#ccc'}}>
                     <h1 className='text-dark text-center'>CPU Usage</h1>
 
                     {/* ======= GRAPH ======= */}
                     <CpuGraph />
 
                 </div>
-                <div className="col-6" style={{ backgroundColor: '#ccc'}}>
+                <div className="col-4" style={{ backgroundColor: '#ccc'}}>
                     <h1 className='text-dark text-center'>Disk usage</h1>
                     {/* ======= GRAPH ======= */}
                     <DiskGraph />
 
+                </div>
+                <div className="col-4" style={{ backgroundColor: '#ccc'}}>
+
+                    <h1 className="text-dark text-center">RAM usage</h1>
+
+                    <RamGraph />
                 </div>
 
             </div>

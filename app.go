@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 	"os/exec"
-	"strings"
 	"strconv"
+	"strings"
 )
 
 // App struct
@@ -19,7 +19,7 @@ type App struct {
 // 	usedMemory string
 // 	sizeMemory string
 // 	percMemory string
-// } 
+// }
 
 // NewApp creates a new App application struct
 func NewApp() *App {
@@ -48,34 +48,30 @@ func (a *App) Greet(name string) string {
 	// Concertir el campo %idle en un numero float
 	idle, err := strconv.ParseFloat(tokens[11], 64)
 
-
 	return fmt.Sprintf("Hello %s, It's show time!, and the idle is %f", name, idle)
 }
 
-
-func (A *App) CPUUsage()string {
-	
+func (A *App) CPUUsage() string {
 
 	out, err := exec.Command("mpstat", "1", "1").Output()
 
 	if err != nil {
 		//fmt.println(err)
-		return "f"
+		return "An error has occurred"
 	}
 
 	lines := strings.Split(string(out), "\n")
 
 	tokens := strings.Fields(lines[3])
-
-	// Concertir el campo %idle en un numero float
+	fmt.Println(tokens)
+	// Convertir el campo %idle en un numero float
 	idle, err := strconv.ParseFloat(tokens[11], 64)
 
-
-	return fmt.Sprintf("%f",idle)
+	return fmt.Sprintf("%f", idle)
 }
 
-func (A *App) DiskUsage()string  {
-	
+func (A *App) DiskUsage() string {
+
 	cmd := exec.Command("df", "--output=avail,size,pcent")
 
 	out, err := cmd.Output()
@@ -86,7 +82,6 @@ func (A *App) DiskUsage()string  {
 	}
 
 	lines := strings.Split(string(out), "\n")
-
 
 	tokens := strings.Fields(lines[2])
 
@@ -102,15 +97,14 @@ func (A *App) DiskUsage()string  {
 	// perc, _ := strconv.ParseFloat(tokens[2], 64)
 
 	// * Used
-	used := size -available
+	used := size - available
 
-	return fmt.Sprintf("%f",used/1024)
+	return fmt.Sprintf("%f", used/1024)
 
 }
 
+func (A *App) GetDiskSize() string {
 
-func (A *App) GetDiskSize()string  {
-	
 	cmd := exec.Command("df", "--output=avail,size,pcent")
 
 	out, err := cmd.Output()
@@ -121,7 +115,6 @@ func (A *App) GetDiskSize()string  {
 	}
 
 	lines := strings.Split(string(out), "\n")
-
 
 	tokens := strings.Fields(lines[2])
 
@@ -136,17 +129,10 @@ func (A *App) GetDiskSize()string  {
 	// * Percentage
 	// perc, _ := strconv.ParseFloat(tokens[2], 64)
 
-
-
-	return fmt.Sprintf("%f",size/1024)
+	return fmt.Sprintf("%f", size/1024)
 
 }
 
 func (a *App) Test(name string) string {
 	return "Hello"
 }
-
-
-
-
-
