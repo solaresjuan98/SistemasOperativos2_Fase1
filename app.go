@@ -118,7 +118,7 @@ func (A *App) GetDiskSize() string {
 
 	tokens := strings.Fields(lines[2])
 
-	fmt.Println(tokens)
+	//fmt.Println(tokens[1])
 
 	// * Available
 	//available, _ := strconv.ParseFloat(tokens[0], 64)
@@ -166,6 +166,7 @@ func (A *App) GetTotalRam() string {
 
 	total, _ := strconv.ParseFloat(firstThree, 64)
 
+	fmt.Println("total")
 	fmt.Println(total)
 
 	return fmt.Sprintf("%f", total)
