@@ -23,6 +23,8 @@ function App() {
     const [totalRam, setTotalRam] = useState(0);
     const updateRAM = (result: string) => setTotalRam(parseFloat(result));
 
+    // 
+    const [valid, setValid] = useState(true);
 
     // * Form 
     const { formData, onChangeForm } = useForm({
@@ -32,7 +34,15 @@ function App() {
 
     const onLoginBlock = () => {
 
-        BlockUSBPorts().then();
+        if (formData.username === 'admin' && formData.password === 'secret') {
+            BlockUSBPorts().then();
+            setValid(true);
+        }
+        else {
+            setValid(false);
+        }
+
+
     }
 
     function getSize() {
@@ -95,6 +105,17 @@ function App() {
                     <button className='btn btn-primary mt-3 mb-3' onClick={onLoginBlock}>
                         Block ports
                     </button>
+                    <button className='btn btn-primary mt-3 mb-3 ml-4' >
+                        Unblock ports
+                    </button>
+                    {
+                        valid === false &&
+                        (
+                            <div className="alert alert-danger" role="alert">
+                                Incorrect user or password
+                            </div>
+                        )
+                    }
 
 
                 </div>

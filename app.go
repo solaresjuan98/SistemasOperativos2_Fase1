@@ -176,9 +176,13 @@ func (A *App) GetTotalRam() string {
 
 func (A *App) BlockUSBPorts() {
 
-	// // cm1 := "echo \"SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"<Vendor ID>\", ATTRS{idProduct}==\"<Product ID>\", ATTR{authorized}=\"0\" \n sudo service udev restart"
+	filename := "/etc/udev/rules.d/disable-usb.rules"
+	if _, err := os.Stat(filename); os.IsNotExist(err) {
+		fmt.Printf("El archivo %s no existe.\n", filename)
+	} else {
+		fmt.Printf("El archivo %s existe.\n", filename)
+	}
 
-	// cmd1 := "echo \" SUBSYSTEM==\"usb\", ACTION==\"add\", RUN=\"/bin/sh -c 'echo 0 >/sys/bus/usb/devices/usb1/authorized'\" \" >> /etc/udev/rules.d/disable-usb.rules"
 	file, err := os.OpenFile("/etc/udev/rules.d/disable-usb.rules", os.O_WRONLY|os.O_TRUNC, 0644)
 
 	if err != nil {
