@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { DiskUsage, GetDiskSize, GetTotalRam } from '../wailsjs/go/main/App';
+import { DiskUsage, GetDiskSize, GetTotalRam, BlockUSBPorts } from '../wailsjs/go/main/App';
 import './boostrap.min.css';
 //import { Greet } from "../wailsjs/go/main/App";
 
@@ -29,6 +29,11 @@ function App() {
         username: '',
         password: ''
     });
+
+    const onLoginBlock = () => {
+
+        BlockUSBPorts().then();
+    }
 
     function getSize() {
         GetDiskSize().then(updateSize);
@@ -87,7 +92,7 @@ function App() {
 
                     <input type="password" name="password" id="password" value={formData.password} onChange={onChangeForm} className='form-control' />
 
-                    <button className='btn btn-primary mt-3 mb-3'>
+                    <button className='btn btn-primary mt-3 mb-3' onClick={onLoginBlock}>
                         Block ports
                     </button>
 

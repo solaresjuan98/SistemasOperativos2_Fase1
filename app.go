@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"context"
 	"fmt"
+	"os"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -170,6 +172,48 @@ func (A *App) GetTotalRam() string {
 	fmt.Println(total)
 
 	return fmt.Sprintf("%f", total)
+}
+
+func (A *App) BlockUSBPorts() {
+
+	// // cm1 := "echo \"SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"<Vendor ID>\", ATTRS{idProduct}==\"<Product ID>\", ATTR{authorized}=\"0\" \n sudo service udev restart"
+
+	// cmd1 := "echo \" SUBSYSTEM==\"usb\", ACTION==\"add\", RUN=\"/bin/sh -c 'echo 0 >/sys/bus/usb/devices/usb1/authorized'\" \" >> /etc/udev/rules.d/disable-usb.rules"
+	file, err := os.OpenFile("/etc/udev/rules.d/disable-usb.rules", os.O_WRONLY|os.O_TRUNC, 0644)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	defer file.Close()
+
+	// Crea un escritor
+	writer := bufio.NewWriter(file)
+
+	// Escribe en el archivo
+	_, err = writer.WriteString("SUBSYSTEM==\"usb\", ATTR{authorized}=\"0\"\n")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	// Limpia el buffer y escribe los datos en el archivo
+	err = writer.Flush()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	exec.Command("sudo", "service", "udev", "restart")
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("Archivo actualizado y servicio reiniciado")
+
 }
 
 func (a *App) Test(name string) string {
