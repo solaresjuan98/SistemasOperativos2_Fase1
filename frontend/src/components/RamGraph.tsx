@@ -78,7 +78,7 @@ export const RamGraph = () => {
         const intervalo = setInterval(() => {
 
             showMemUsage();
-            console.log(value);
+            //console.log(value);
             // * Agregar al arreglo global de datos
             setDatos([...datos, value]);
 

@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // App struct
@@ -65,7 +66,7 @@ func (A *App) CPUUsage() string {
 	lines := strings.Split(string(out), "\n")
 
 	tokens := strings.Fields(lines[3])
-	fmt.Println(tokens)
+	//fmt.Println(tokens)
 	// Convertir el campo %idle en un numero float
 	idle, err := strconv.ParseFloat(tokens[11], 64)
 
@@ -87,7 +88,7 @@ func (A *App) DiskUsage() string {
 
 	tokens := strings.Fields(lines[2])
 
-	fmt.Println(tokens)
+	//fmt.Println(tokens)
 
 	// * Available
 	available, _ := strconv.ParseFloat(tokens[0], 64)
@@ -168,8 +169,8 @@ func (A *App) GetTotalRam() string {
 
 	total, _ := strconv.ParseFloat(firstThree, 64)
 
-	fmt.Println("total")
-	fmt.Println(total)
+	//fmt.Println("total")
+	//fmt.Println(total)
 
 	return fmt.Sprintf("%f", total)
 }
@@ -179,11 +180,19 @@ func (A *App) BlockUSBPorts() {
 	filename := "/etc/udev/rules.d/disable-usb.rules"
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
 		fmt.Printf("El archivo %s no existe.\n", filename)
+
+		// Create a file
+		file, err := os.Create(filename)
+		if err != nil {
+			panic(err)
+		}
+		defer file.Close()
+
 	} else {
 		fmt.Printf("El archivo %s existe.\n", filename)
 	}
 
-	file, err := os.OpenFile("/etc/udev/rules.d/disable-usb.rules", os.O_WRONLY|os.O_TRUNC, 0644)
+	file, err := os.OpenFile(filename, os.O_WRONLY|os.O_TRUNC, 0644)
 
 	if err != nil {
 		fmt.Println(err)
@@ -216,8 +225,72 @@ func (A *App) BlockUSBPorts() {
 		return
 	}
 
-	fmt.Println("Archivo actualizado y servicio reiniciado")
+	//fmt.Println("Archivo actualizado y servicio reiniciado")
 
+}
+
+func (a *App) UnblockUSBPorts() {
+	filename := "/etc/udev/rules.d/disable-usb.rules"
+
+	exec.Command("sudo", "rm", filename).Run()
+
+	exec.Command("sudo", "service", "udev", "restart").Run()
+
+}
+
+func (a *App) CopyFile(src, dest string) error {
+
+	exec.Command("cp", src, dest).Run()
+
+	WriteLog(src, dest)
+	return nil
+}
+
+func (a *App) GetUSBDevices() []string {
+
+	out, _ := exec.Command("ls", "/media/snowman").Output()
+
+	lines := strings.Split(string(out), "\n")
+
+	//fmt.Println(lines)
+
+	return lines
+}
+
+func WriteLog(src, dest string) {
+
+	filename := "/home/snowman/Secrets.txt"
+	if _, err := os.Stat(filename); os.IsNotExist(err) {
+		fmt.Printf("El archivo %s no existe.\n", filename)
+
+		// Create a file
+		file, err := os.Create(filename)
+		if err != nil {
+			panic(err)
+		}
+		defer file.Close()
+
+	} else {
+		fmt.Printf("El archivo %s existe.\n", filename)
+	}
+
+	now := time.Now()
+	nowFormatted := now.Format("2006-01-02 15:04:05")
+	fmt.Println(nowFormatted)
+
+	// Abrir archivo en modo append
+	file, err := os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	logMessage := fmt.Sprintf("[COPY][time:%s] %s %s \n", nowFormatted, src, dest)
+
+	// Escribir en el archivo
+	if _, err := file.WriteString(logMessage); err != nil {
+		panic(err)
+	}
 }
 
 func (a *App) Test(name string) string {

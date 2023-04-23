@@ -10,6 +10,10 @@ export function CPUUsage() {
   return window['go']['main']['App']['CPUUsage']();
 }
 
+export function CopyFile(arg1, arg2) {
+  return window['go']['main']['App']['CopyFile'](arg1, arg2);
+}
+
 export function DiskUsage() {
   return window['go']['main']['App']['DiskUsage']();
 }
@@ -26,10 +30,18 @@ export function GetTotalRam() {
   return window['go']['main']['App']['GetTotalRam']();
 }
 
+export function GetUSBDevices() {
+  return window['go']['main']['App']['GetUSBDevices']();
+}
+
 export function Greet(arg1) {
   return window['go']['main']['App']['Greet'](arg1);
 }
 
 export function Test(arg1) {
   return window['go']['main']['App']['Test'](arg1);
+}
+
+export function UnblockUSBPorts() {
+  return window['go']['main']['App']['UnblockUSBPorts']();
 }

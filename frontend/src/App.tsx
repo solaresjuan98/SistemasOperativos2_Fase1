@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { DiskUsage, GetDiskSize, GetTotalRam, BlockUSBPorts } from '../wailsjs/go/main/App';
+import { DiskUsage, GetDiskSize, GetTotalRam, BlockUSBPorts, UnblockUSBPorts } from '../wailsjs/go/main/App';
 import './boostrap.min.css';
 //import { Greet } from "../wailsjs/go/main/App";
 
@@ -8,6 +8,7 @@ import { CpuGraph } from './components/CpuGraph'
 import { DiskGraph } from './components/DiskGraph';
 import { RamGraph } from './components/RamGraph';
 import { useForm } from './hooks/useForm';
+import { UsbCopy } from './components/UsbCopy';
 
 function App() {
     // const [name, setName] = useState('');
@@ -35,7 +36,23 @@ function App() {
     const onLoginBlock = () => {
 
         if (formData.username === 'admin' && formData.password === 'secret') {
+            // * Block ALL USB PORTS 
             BlockUSBPorts().then();
+            setValid(true);
+        }
+        else {
+            setValid(false);
+        }
+
+
+    }
+
+    const onLoginUnblock = () => {
+
+
+        if (formData.username === 'admin' && formData.password === 'secret') {
+            // * Unblock
+            UnblockUSBPorts().then();
             setValid(true);
         }
         else {
@@ -57,8 +74,6 @@ function App() {
         const intervalo = setInterval(() => {
 
             getSize();
-            // let temp = (parseInt(result)/1024);
-            // setDiskSize(temp);
 
         }, 3000);
 
@@ -71,7 +86,7 @@ function App() {
     return (
 
         <div className="container mt-3">
-            <h1 className='mb-2'>Proyecto Fase 1</h1>
+            <h1 className='mb-2'>Proyecto Fase 2</h1>
             <pre>
                 Juan Antonio Solares {"\n"}
                 Sistemas Operativos 2 {"\n"}
@@ -105,7 +120,7 @@ function App() {
                     <button className='btn btn-primary mt-3 mb-3' onClick={onLoginBlock}>
                         Block ports
                     </button>
-                    <button className='btn btn-primary mt-3 mb-3 ml-4' >
+                    <button className='btn btn-primary mt-3 mb-3 ml-4' onClick={onLoginUnblock} >
                         Unblock ports
                     </button>
                     {
@@ -148,6 +163,12 @@ function App() {
 
             </div>
 
+            <hr />
+
+            {/* * ======= GRAPH ======= */}
+            <div className="row mb-5">
+                <UsbCopy />
+            </div>
         </div>
 
     )
